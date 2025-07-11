@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    ppr: true,
+    dynamicIO: true,
+  },
+  expireTime: 3600,
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //     hmrRefreshes: true,
+  //   },
+  // },
 };
 
 export default nextConfig;
