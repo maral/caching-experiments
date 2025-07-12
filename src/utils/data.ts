@@ -5,8 +5,12 @@ import {
 
 export async function getCachedConfig() {
   "use cache";
+  cacheLife({
+    revalidate: 20,
+    stale: 20,
+    expire: 3600,
+  });
   cacheTag("config");
-  cacheLife("weeks");
 
   console.log("Fetching config...");
   await new Promise((resolve) => setTimeout(resolve, 1000));
