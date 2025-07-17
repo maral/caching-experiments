@@ -20,7 +20,7 @@ export async function getCachedConfig() {
 export async function getStableData() {
   "use cache";
   cacheLife("minutes");
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
   return {
     name: "SuperWidget",
@@ -33,7 +33,7 @@ export async function getStableData() {
 }
 
 export async function getVolatileData() {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 0));
   return {
     price: "$99.99",
     availability: "In Stock",

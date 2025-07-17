@@ -1,4 +1,4 @@
-import { withDelay } from "@/utils/delay";
+// import { withDelay } from "@/utils/delay";
 import React from "react";
 
 type WeatherData = {
@@ -8,22 +8,28 @@ type WeatherData = {
 };
 
 export default async function HongKongWeather() {
-  const response = await withDelay(
-    fetch(
-      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en",
-      {
-        cache: "no-store",
-      }
-    ),
-    2000
+  // const response = await withDelay(
+  //   fetch(
+  //     "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en",
+  //     {
+  //       cache: "no-store",
+  //     }
+  //   ),
+  //   2000
+  // );
+
+  // if (!response.ok) {
+  //   console.error("Failed to fetch weather data");
+  //   return <div>Error loading weather data</div>;
+  // }
+
+  const weatherData: WeatherData = await new Promise((resolve) =>
+    resolve({
+      temperature: { data: [{ value: 28 }] },
+      humidity: { data: [{ value: 75 }] },
+      rainfall: { data: [{ max: 5 }] },
+    })
   );
-
-  if (!response.ok) {
-    console.error("Failed to fetch weather data");
-    return <div>Error loading weather data</div>;
-  }
-
-  const weatherData: WeatherData = await response.json();
 
   console.log("HongKongWeather");
 

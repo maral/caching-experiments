@@ -1,44 +1,61 @@
-import Image from "next/image";
+import ProductCategory from "@/components/ProductCategory";
+import ProductDescription from "@/components/ProductDescription";
+import ProductDetail from "@/components/ProductDetail";
+import ProductDiscount from "@/components/ProductDiscount";
+import ProductImage from "@/components/ProductImage";
+import ProductManufacturer from "@/components/ProductManufacturer";
+import ProductPrice from "@/components/ProductPrice";
+import ProductStockCount from "@/components/ProductStockCount";
+import ProductTitle from "@/components/ProductTitle";
+import VolatileLastUpdated from "@/components/VolatileLastUpdated";
+import { Suspense } from "react";
+
+const components = {
+  ProductDetail,
+  ProductCategory,
+  ProductDescription,
+  ProductTitle,
+  ProductDiscount,
+  ProductImage,
+  ProductManufacturer,
+  ProductPrice,
+  ProductStockCount,
+  VolatileLastUpdated,
+};
+
+type Node = {
+  component: keyof typeof components;
+  children?: Node[];
+};
+
+const config: Node = {
+  component: "ProductDetail",
+  children: [
+    { component: "ProductImage" },
+    { component: "ProductPrice" },
+    { component: "VolatileLastUpdated" },
+    { component: "ProductDiscount" },
+    { component: "ProductStockCount" },
+    { component: "ProductCategory" },
+    { component: "ProductManufacturer" },
+  ],
+};
 
 export default function About() {
   console.log("About");
+  return <RenderSuspendedNode node={config} />;
+}
+
+function RenderSuspendedNode({ node }: { node: Node }) {
+  const Component = components[node.component];
+  console.log("RenderSuspendedNode");
   return (
-    <article className="flex-grow container mx-auto px-6 py-12">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">About Us</h1>
-        <p className="text-gray-500 mb-8">
-          Learn more about our journey and mission.
-        </p>
-        <div className="prose lg:prose-xl">
-          <p>
-            Welcome to our corner of the web! We are passionate about creating
-            innovative solutions that empower developers and businesses to
-            succeed. Our team is dedicated to exploring cutting-edge
-            technologies and sharing knowledge with the community.
-          </p>
-          <p>
-            From humble beginnings to where we are today, our journey has been
-            fueled by curiosity, collaboration, and a commitment to excellence.
-            We believe in the power of technology to transform lives and
-            industries, and we strive to make a positive impact through our
-            work.
-          </p>
-          <Image
-            src="/team-photo.jpeg"
-            alt="Our team collaborating in the office"
-            width={800}
-            height={450}
-            className="rounded-lg my-8"
-          />
-          <p>
-            Whether it&apos;s building scalable applications, contributing to
-            open source, or mentoring the next generation of developers, we are
-            driven by a shared vision of innovation and growth. Thank you for
-            being part of our story—we&apos;re excited to continue this journey
-            together.
-          </p>
-        </div>
-      </div>
-    </article>
+    <Suspense fallback={<div>Loading {node.component}...</div>}>
+      <Component>
+        {node.children?.map((child, index) => (
+          <RenderSuspendedNode key={index} node={child} />
+        ))}
+      </Component>
+    </Suspense>
   );
 }
