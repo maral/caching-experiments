@@ -5,11 +5,11 @@ import {
 
 export async function getCachedConfig() {
   "use cache";
-  cacheLife({
-    revalidate: 20,
-    stale: 20,
-    expire: 3600,
-  });
+  // cacheLife({
+  //   revalidate: 20,
+  //   stale: 20,
+  //   expire: 3600,
+  // });
   cacheTag("config");
 
   console.log("Fetching config...");
@@ -19,7 +19,12 @@ export async function getCachedConfig() {
 
 export async function getStableData() {
   "use cache";
-  cacheLife("minutes");
+  cacheLife({
+    revalidate: 300,
+    stale: 300,
+    expire: 3600,
+  });
+  cacheTag(`nuclearBomb-${Math.random()}`);
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return {
